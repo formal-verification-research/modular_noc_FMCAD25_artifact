@@ -1,13 +1,12 @@
-import math
 import enum
 from typing import Callable
 from pathlib import Path
 
 class PropertyType(enum.Enum):
-    RESISTIVE = 1
-    INDUCTIVE = 2
-    BOTH_RI = 3
-    FUNCTION = 4
+    RESISTIVE = 1 # Indicates PSN characterization of Resistive Noise 
+    INDUCTIVE = 2 # Indicates PSN characterization of Inductive Noise 
+    BOTH_RI = 3 # Indicates PSN characterization of Both Resistive and Inductive Noise 
+    FUNCTION = 4 # Indicates no PSN characterization and functional correctness properties
     NO_PROPS = 5
 
 def add_info(func: Callable[..., str]) -> Callable[..., str]:
@@ -34,6 +33,11 @@ def add_info(func: Callable[..., str]) -> Callable[..., str]:
 
 
 class Noc:
+    """
+    Represents a NoC design and keeps track of user defined parameters. Allows for 
+    a Modest model to be generated that matches the given parameters.
+    """
+
     def __init__(self, size: int, *, 
                  buffer_size: int = 4,
                  activity_thresh: int = 3,
@@ -41,7 +45,24 @@ class Noc:
                  injection_rate_denominator: int = 10,
                  resistive_noise_threshold: int = 1,
                  inductive_noise_threshold: int = 1):
+        """
+        Initial a NoC design with the specified design parameters.
+
+        Inputs:
+            size (int) - n for a given nxn NoC i.e. 2 for a 2x2 NoC
+            buffer_size (int) - The length of the buffers in each router
+            activity_thresh (int) - The threshold at which the activity counter is updated.
+            injection_rate_numerator (int) - The number of clock cycles to inject flits in
+                                             during `injection_rate_denominator` cycles.
+            injection_rate_denominator (int) - The length of the flit injection rate cycle.
+            resistive_noise_threshold (int) - The threshold at which a resistive noise PSN 
+                                              event is generated.
+            inductive_noise_threshold (int) - The threshold at which a inductive noise PSN
+                                              event is generated.
+        """
         assert size >= 2, "Size must be at least 2x2"
+        assert injection_rate_numerator <= injection_rate_denominator, \
+                "Numerator must be less than or equal to denominator"
 
         self.num_nodes = size * size
         self.dimension = size
@@ -51,8 +72,38 @@ class Noc:
         self.injection_rate_denominator = injection_rate_denominator
         self.resistive_noise_threshold = resistive_noise_threshold
         self.inductive_noise_threshold = inductive_noise_threshold
-    
-    def print(self, ptype: PropertyType, *, clk_low: int = 0, clk_high: int = 100, stride: int = 1):
+
+    def print(self, ptype: PropertyType, *, clk_low: int = 0, clk_high: int = 100, stride: int = 1) -> str:
+        """
+        Returns the Modest model defined by this instance of Noc as a string.
+
+        Inputs:
+            ptype (PropertyType) - The type of model to generate.
+            clk_low (int) - for a RESISTIVE or INDUCTIVE or BOTH_RI model, set the lower clock
+                            cycle bound to generate PSN results for.
+            clk_high (int) - for a RESISTIVE or INDUCTIVE or BOTH_RI model, set the upper clock 
+                            cycle bound to generate PSN results for.
+            stride (int) - for a RESISTIVE or INDUCTIVE or BOTH_RI model, set the stride of clock 
+                            cycles to consider between `clk_low` and `clk_high`.
+
+        Outputs:
+            A string containing the Modest model of the specified NoC.
+
+        Examples:
+            ```python
+            _2x2 = Noc(2)
+
+            # Write file for correctness verification 
+            with open("correctness.modest", "w") as f:
+                f.write(_2x2.print(PropertyType.FUNCTION)
+
+            # Write a file to characterize PSN for the first 50
+            # clock cycles, skipping every other cycle.
+            with open("psn.modest", "w") as f:
+                f.write(_2x2.print(PropertyType.RESISTIVE, 
+                        clk_low=0, clk_high=50, stride=2)
+            ```
+        """
         return self.type() \
                 + self.user_defined_constants() \
                 + self.calculated_constants()\
