@@ -28,13 +28,11 @@ def main():
     """ Example of using the Noc and Modest libaries """    
     # Generate a 2x2 NoC to verify functional correctness
     _2x2 = noc.Noc(2)
-
-    with open("tmp.modest", "w") as f:
-        f.write(_2x2.print(noc.PropertyType.FUNCTION))
-    return
     
     # Run Modest check on the file to verify it works
-    _2x2_output = modest.check(_2x2.print(noc.PropertyType.FUNCTION))
+    print("Verifying 2x2 model...")
+    _2x2_output = modest.check(_2x2.print(noc.PropertyType.FUNCTION),
+                               opts=["--chainopt", "--unsafe"])
     
     # Check if there were any errors
     if "False" in _2x2_output:
@@ -62,7 +60,7 @@ def main():
     
         # Check if we have reached a probability of 1.0 yet (with a small margin for
         # floating point error)
-        probabilities += _2x2_sim_output
+        probabilities += parse_probabilities(_2x2_sim_output)
 
         max_prob = max(probabilities, key=lambda x: x[1])[1]
         if max_prob >= (1.0 - 1e-5):

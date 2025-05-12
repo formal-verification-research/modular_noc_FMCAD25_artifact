@@ -68,7 +68,7 @@ def __run(model: str | Path, output_path: Path | None = None, command: list[str]
 
     return output
 
-def check(model: str | Path, output_path: Path | None = None) -> str:
+def check(model: str | Path, *, output_path: Path | None = None, opts: list[str] = []) -> str:
     """
     Runs `modest check` on the given input.
 
@@ -77,13 +77,15 @@ def check(model: str | Path, output_path: Path | None = None) -> str:
                             a temporary .modest model file is written to use for analysis) or as 
                             a path to an existing .modest model.
         output_path (Path | None) - The path to write the output to.
+        opts (list[str]) - Additional options to path to Modest. For example, --unsafe to generate
+                            higher performance state space exploration.
 
     Returns:
         The output of `modest check` on the file.
     """
-    return __run(model, output_path, [MODEST_EXECUTABLE, "check"])
+    return __run(model, output_path, [MODEST_EXECUTABLE, "check"], opts=opts)
 
-def simulate(model: str | Path, output_path: Path | None = None) -> str:
+def simulate(model: str | Path, *, output_path: Path | None = None, opts: list[str] = []) -> str:
     """
     Runs `modest simulate` on the given input.
 
@@ -92,11 +94,13 @@ def simulate(model: str | Path, output_path: Path | None = None) -> str:
                             a temporary .modest model file is written to use for analysis) or as 
                             a path to an existing .modest model.
         output_path (Path | None) - The path to write the output to.
+        opts (list[str]) - Additional options to path to Modest. For example, --unsafe to generate
+                            higher performance state space exploration.
 
     Returns:
         The output of `modest simulate` on the file.
     """
-    return __run(model, output_path, command=[MODEST_EXECUTABLE, "simulate"], opts=["--max-run-length", "0", "--unsafe"])
+    return __run(model, output_path, command=[MODEST_EXECUTABLE, "simulate"], opts=opts)
 
 if is_modest_on_path():
     result = subprocess.run([MODEST_EXECUTABLE, "--version"], capture_output=True, text=True)
