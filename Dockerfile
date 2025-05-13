@@ -12,7 +12,7 @@ RUN apt-get update && \
     unzip
 
 # Copy modest to the container
-COPY Modest-Toolset-v3.1.290-gff8cae090-linux-x64.zip /tmp/modest.zip 
+COPY modest.zip /tmp/modest.zip 
 
 # Create a directory for Modest
 RUN mkdir -p /opt/modest
@@ -21,7 +21,7 @@ RUN mkdir -p /opt/modest
 RUN unzip /tmp/modest.zip -d /opt/modest && rm /tmp/modest.zip
 
 # Add modest to the path
-ENV PATH="/opt/modest/Modest:$PATH"
+ENV PATH="/opt/modest:$PATH"
 
 # Create the base directory for working from
 RUN mkdir -p /home && mkdir -p /home/python && mkdir -p /home/models
