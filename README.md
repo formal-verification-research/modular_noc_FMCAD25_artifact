@@ -131,5 +131,34 @@ and should use only a small amount of memory as it is simulating the model, not 
 statespace.
 
 ```sh
-py python/fmcad.py
+python3 python/fmcad.py
 ```
+
+### Interpreting the Results
+
+The output of running modest on the 2x2 correctness model demonstrate that all properties hold
+for the model. Each property listed in the output represents a CTL property in the model, and
+is either marked `True` if the property held or `False` if it did not hold. You can see the CTL
+properties in Section V. of our paper or on lines 227-361 of
+[functional_2x2.modest](models/functional_2x2.modest).
+
+The output of the PSN characterization is stored in the result/ directory. This directory has
+subdirectories for 2x2, 3x3, and 4x4. Inside of each of these directories is a list of .csv
+and .txt files containing the results of each simulation run. The files are of the following
+naming convention:
+
+```text
+noc_<size>_<type>_<threshold>_<clk cycle stride>_<cycles per analysis>
+```
+
+For example, simulation results (e.g. CDF of PSN probability vs. clk cycles) for inductive noise
+with a `INDUCTIVE_THRESHOLD` of 1, a clock cycle stride of 6, and 300 cycles per analysis would
+be named as follows:
+
+```text
+noc_2x2_inductive_noise_threshold_1_stride_6_block_size_300
+```
+
+The files ending in .csv are the raw data from `modest simulate` formatted in a csv file, and the
+files ending in .time.txt contain the simulation specification and time that it took to complete
+the simulation.
