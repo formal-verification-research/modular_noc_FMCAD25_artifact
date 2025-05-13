@@ -158,3 +158,10 @@ noc_2x2_inductive_noise_threshold_1_stride_6_block_size_300
 The files ending in .csv are the raw data from `modest simulate` formatted in a csv file, and the
 files ending in .time.txt contain the simulation specification and time that it took to complete
 the simulation.
+
+To replicate the plots from the submission we provide a plotting script using Matplotlib in Python.
+If you are using the docker image, simply run `python3 python/plots.py` to generate the plots.
+Otherwise, first ensure that you have Matplotlib and Pandas installed before running the script.
+
+Plots can be viewed in Docker desktop by going to "Containers" (in the leftside menu bar), then clicking
+on "modular_noc", then selecting "files", then navigating to the /home/plots/ directory.

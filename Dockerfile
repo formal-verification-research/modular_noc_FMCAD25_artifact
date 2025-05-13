@@ -9,7 +9,9 @@ RUN apt-get update && \
     apt-get install -y --no-install-recommends \
     build-essential \
     python3 \
-    unzip
+    unzip \
+    python3-matplotlib \
+    python3-pandas
 
 # Copy modest to the container
 COPY modest.zip /tmp/modest.zip 
