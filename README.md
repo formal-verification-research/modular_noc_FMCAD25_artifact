@@ -5,7 +5,9 @@ Zhen Zhang
 
 This is the artifact for the Probabilistic Verification for Modular Network-on-Chip Systems
 paper submitted to FMCAD 25. Access the artifact by downloading the Docker image from the
-releases section of this GitHub repository.
+releases section of this GitHub repository, and then follow the instructions below for
+loading the docker image on your machine. Steps for replicating the work presented in
+the paper are located at the bottom of this document.
 
 ## Prerequisites for Running the Modular NoC model
 
@@ -103,6 +105,9 @@ Additionally, two python scripts are provided for generating arbitrarily-sized N
 and for running the `modest` tool from Python in the [python/](./python/) directory.
 
 ## Replicating Results From the Paper
+
+Results can either be replicated using the provided Docker image or with a local
+installation of Modest and Python.
 
 ### 2x2 Correctness
 
