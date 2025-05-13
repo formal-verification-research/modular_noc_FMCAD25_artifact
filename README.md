@@ -4,7 +4,8 @@ Authors: Nick Waddoups, Jonah Boe, Arnd Hartmanns, Prabal Basu, Sanghamitra Roy,
 Zhen Zhang
 
 This is the artifact for the Probabilistic Verification for Modular Network-on-Chip Systems
-paper submitted to FMCAD 25.
+paper submitted to FMCAD 25. Access the artifact by downloading the Docker image from the
+releases section of this GitHub repository.
 
 ## Prerequisites for Running the Modular NoC model
 
@@ -15,7 +16,7 @@ templates using the Python library.
 - Python 3.10 or greater.
 - 16 GB RAM or greater.
 
-Additionally, you can use the provided Docker image which, once set up, will have both the
+Optionally, you can use the provided Docker image which, once set up, will have both the
 Modest Toolset and Python installed. For verification of larger NoCs, using a local
 installation of Modest is recommended as the model checking is a CPU and RAM intensive
 process.
@@ -25,20 +26,6 @@ process.
 This artifact has a Docker image that contains the build of the Modest Toolset used in the
 paper.
 
-### Obtaining Modest for the Docker Container
-
-To build the docker image you first need to download the x86-64 Version 3.1.290 of the Modest
-Toolset from [modestchecker.net](https://www.modestchecker.net/Downloads/) and place the zip
-file in this directory. Due to the licensing agreements of Modest we cannot include it in the
-Docker image.
-
-After downloading the Modest Toolset your directory should contain the following entries:
-
-```sh
-$ ls
-Dockerfile    models/    Modest-Toolset-v3.1.290-gff8cae090-linux-x64.zip    python/    README.md
-```
-
 ### Installing Docker Desktop
 
 Next, you need to ensure Docker is installed. Follow the instructions located at
@@ -46,27 +33,31 @@ Next, you need to ensure Docker is installed. Follow the instructions located at
 Docker for you specific operating system. Once enstalled, make sure to start Docker
 Desktop in order for the following commands to work correctly.
 
-### Building the Docker Image
+### Obtaining the Docker Image
 
-Move your shell into this directory (the one containing the [Dockerfile](Dockerfile)) and then
-run the following command to build the Docker image.
+Go to the releases tab of artifact's GitHub repository (will update to Zenodo in future)
+and download the latest release.
+
+Move your shell into this directory containing the downloaded release and then
+run the following command to load the Docker image.
 
 ```sh
-docker build -t modular_noc .
+# load the docker image, will take several minutes
+docker load -i modular_noc.tar
 ```
 
 Then start the docker image using the following command.
 
 ```sh
-docker run -it modular_noc
+docker run -it modular_noc:latest
 ```
 
 You should now be in the docker environment. You can check that Modest and Python are correctly
 installed by running the following commands.
 
 ```sh
-modest --version 
-python3 --version
+modest --version  # v3.1.290
+python3 --version # 3.11.2
 ```
 
 ## Installing Modest on a Local Machine
