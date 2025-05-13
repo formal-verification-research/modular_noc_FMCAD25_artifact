@@ -160,7 +160,7 @@ files ending in .time.txt contain the simulation specification and time that it 
 the simulation.
 
 To replicate the plots from the submission we provide a plotting script using Matplotlib in Python.
-If you are using the docker image, simply run `python3 python/plots.py` to generate the plots.
+If you are using the docker image, simply run `python3 python/plot.py` to generate the plots.
 Otherwise, first ensure that you have Matplotlib and Pandas installed before running the script.
 
 Plots can be viewed in Docker desktop by going to "Containers" (in the leftside menu bar), then clicking

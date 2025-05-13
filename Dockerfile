@@ -30,6 +30,7 @@ RUN mkdir -p /home && mkdir -p /home/python && mkdir -p /home/models
 
 # Copy the code into the image
 COPY README.md /home/README.md
+COPY LICENSE /home/LICENSE
 COPY python/ /home/python
 COPY models/ /home/models
 
